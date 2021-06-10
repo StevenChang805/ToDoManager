@@ -28,6 +28,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <Pane prefHeight="61.0" prefWidth="525.0" GridPane.columnIndex="1" GridPane.columnSpan="7">
@@ -94,7 +95,7 @@
                </font>
             </Label>
          </children></Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="6">
+      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="7">
          <children>
             <Button alignment="CENTER" contentDisplay="CENTER" layoutX="-8.0" layoutY="16.0" mnemonicParsing="false" onAction="#addNewItem" text="New Item" textAlignment="CENTER">
                <font>
@@ -113,7 +114,7 @@
       </Pane>
       <Pane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="16.0" mnemonicParsing="false" text="Prev.">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="16.0" mnemonicParsing="false" onAction="#prevMonth" text="Prev.">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font></Button>
@@ -121,7 +122,7 @@
       </Pane>
       <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="18.0" mnemonicParsing="false" text="Next">
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="18.0" mnemonicParsing="false" onAction="#nextMonth" text="Next">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font></Button>
