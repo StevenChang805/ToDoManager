@@ -30,6 +30,9 @@ public class MonthlyViewController implements Initializable {
     @FXML
     public GridPane gridPane;
 
+    @FXML
+    public Pane monthMenuBar;
+
     private final Font mainFont = new Font("Helvetica", 13);
     private LocalDate curDate;
     private int gridPaneStart;
@@ -81,6 +84,8 @@ public class MonthlyViewController implements Initializable {
         int year = date.getYear();
 
         lblMonth.setAlignment(Pos.CENTER);
+        lblMonth.setTextAlignment(TextAlignment.CENTER);
+        lblMonth.setBackground(new Background(new BackgroundFill(Color.CYAN, new CornerRadii(0), new Insets(0))));
         lblMonth.setText(month + " " + year);
     }
 
