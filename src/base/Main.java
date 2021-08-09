@@ -18,7 +18,7 @@ public class Main extends Application {
         primaryStage = stage;
         // initialize the application with monthly view
         Parent root = FXMLLoader.load(getClass().getResource("../MonthlyToDo/MonthlyToDo.fxml"));
-
+        DataCollector dc = new DataCollector();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
