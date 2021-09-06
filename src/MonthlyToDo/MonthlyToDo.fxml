@@ -31,7 +31,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Pane fx:id="monthMenuBar" prefHeight="61.0" prefWidth="525.0" GridPane.columnIndex="1" GridPane.columnSpan="7">
+      <Pane fx:id="monthPane" prefHeight="61.0" prefWidth="525.0" GridPane.columnIndex="1" GridPane.columnSpan="7">
          <children>
             <Label fx:id="lblMonth" alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="19.0" prefHeight="17.0" prefWidth="423.0">
                <font>
@@ -39,57 +39,57 @@
                </font></Label>
          </children>
       </Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Pane fx:id="monPane" prefHeight="200.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="6.0" text="Mon" textAlignment="CENTER">
+            <Label fx:id="lblMon" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="6.0" text="Mon" textAlignment="CENTER">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font>
             </Label>
          </children></Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Pane fx:id="tuePane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="6.0" text="Tue">
+            <Label fx:id="lblTue" alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="6.0" text="Tue">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font>
             </Label>
          </children></Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Pane fx:id="wedPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="6.0" text="Wed">
+            <Label fx:id="lblWed" alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="6.0" text="Wed">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font>
             </Label>
          </children></Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+      <Pane fx:id="thuPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="6.0" text="Thu">
+            <Label fx:id="lblThu" alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="6.0" text="Thu">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font>
             </Label>
          </children></Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+      <Pane fx:id="friPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="26.0" layoutY="6.0" text="Fri">
+            <Label fx:id="lblFri" alignment="CENTER" contentDisplay="CENTER" layoutX="26.0" layoutY="6.0" text="Fri">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font>
             </Label>
          </children></Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
+      <Pane fx:id="satPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="24.0" layoutY="6.0" text="Sat">
+            <Label fx:id="lblSat" alignment="CENTER" contentDisplay="CENTER" layoutX="24.0" layoutY="6.0" text="Sat">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font>
             </Label>
          </children></Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1">
+      <Pane fx:id="sunPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="6.0" text="Sun">
+            <Label fx:id="lblSun" alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="6.0" text="Sun">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font>
@@ -103,26 +103,26 @@
                </font></Button>
          </children>
       </Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowIndex="1">
+      <Pane fx:id="taskLblPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowIndex="1">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="19.0" layoutY="6.0" text="Upcoming Tasks" textAlignment="CENTER">
+            <Label fx:id="lblTasks" alignment="CENTER" contentDisplay="CENTER" layoutX="19.0" layoutY="6.0" text="Upcoming Tasks" textAlignment="CENTER">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font>
             </Label>
          </children>
       </Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0">
+      <Pane fx:id="prevBtnPane" prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="16.0" mnemonicParsing="false" onAction="#prevMonth" text="Prev.">
+            <Button fx:id="prevBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="16.0" mnemonicParsing="false" onAction="#prevMonth" text="Prev.">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font></Button>
          </children>
       </Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8">
+      <Pane fx:id="nextBtnPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="18.0" mnemonicParsing="false" onAction="#nextMonth" text="Next">
+            <Button fx:id="nextBtn" alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="18.0" mnemonicParsing="false" onAction="#nextMonth" text="Next">
                <font>
                   <Font name="Helvetica" size="13.0" />
                </font></Button>

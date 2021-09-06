@@ -12,26 +12,42 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.time.*;
 import java.util.*;
 
 public class MonthlyViewController implements Initializable {
-    @FXML
-    public Label lblMonth;
+    @FXML public Label lblMonth;
+    @FXML public Label lblMon;
+    @FXML public Label lblTue;
+    @FXML public Label lblWed;
+    @FXML public Label lblThu;
+    @FXML public Label lblFri;
+    @FXML public Label lblSat;
+    @FXML public Label lblSun;
+    @FXML public Label lblTasks;
+
+    @FXML public GridPane gridPane;
+    @FXML public Pane prevBtnPane;
+    @FXML public Pane nextBtnPane;
+    @FXML public Pane monthPane;
+    @FXML public Pane monPane;
+    @FXML public Pane tuePane;
+    @FXML public Pane wedPane;
+    @FXML public Pane thuPane;
+    @FXML public Pane friPane;
+    @FXML public Pane satPane;
+    @FXML public Pane sunPane;
+    @FXML public Pane taskLblPane;
 
     @FXML
-    public GridPane gridPane;
-
+    public Button prevBtn;
     @FXML
-    public Pane monthMenuBar;
+    public Button nextBtn;
 
     private final Font mainFont = new Font("Helvetica", 13);
     private LocalDate curDate;
@@ -69,6 +85,8 @@ public class MonthlyViewController implements Initializable {
         // initialize label
         curDate = LocalDate.now();
         setLblMonth(curDate);
+        centerButtons();
+        centerLabels();
         gridPaneStart = gridPane.getChildren().size();
         setupGrid(curDate);
     }
@@ -79,14 +97,44 @@ public class MonthlyViewController implements Initializable {
     }
 
     public void setLblMonth(LocalDate date) {
+        // extract month & year
         String month = date.getMonth().name();
         month = month.substring(0,1).toUpperCase() + month.substring(1).toLowerCase();
         int year = date.getYear();
-
-        lblMonth.setAlignment(Pos.CENTER);
-        lblMonth.setTextAlignment(TextAlignment.CENTER);
-        lblMonth.setBackground(new Background(new BackgroundFill(Color.CYAN, new CornerRadii(0), new Insets(0))));
+        // set month & year on label
         lblMonth.setText(month + " " + year);
+    } // end of method setLblMonth
+
+    public void centerButtons() {
+        // fix previous month button to the center of the pane
+        centerBtnToPane(prevBtn, prevBtnPane);
+        // fix next month button to the center of the pane
+        centerBtnToPane(nextBtn, nextBtnPane);
+    } // end of method centerButtons
+
+    public void centerLabels() {
+        // fix month label to the center of the pane
+        centerLblToPane(lblMonth, monthPane);
+        // fix day of week labels to the center of their respective panes
+        centerLblToPane(lblMon, monPane);
+        centerLblToPane(lblTue, tuePane);
+        centerLblToPane(lblWed, wedPane);
+        centerLblToPane(lblThu, thuPane);
+        centerLblToPane(lblFri, friPane);
+        centerLblToPane(lblSat, satPane);
+        centerLblToPane(lblSun, sunPane);
+        // fix upcoming tasks label to its pane
+        centerLblToPane(lblTasks, taskLblPane);
+    }
+
+    public void centerBtnToPane(Button btn, Pane pane) {
+        btn.layoutXProperty().bind(pane.widthProperty().subtract(btn.widthProperty()).divide(2));
+        btn.layoutYProperty().bind(pane.heightProperty().subtract(btn.heightProperty()).divide(2));
+    }
+
+    public void centerLblToPane(Label lbl, Pane pane) {
+        lbl.layoutXProperty().bind(pane.widthProperty().subtract(lbl.widthProperty()).divide(2));
+        lbl.layoutYProperty().bind(pane.heightProperty().subtract(lbl.heightProperty()).divide(2));
     }
 
     public void setupGrid(LocalDate date) {

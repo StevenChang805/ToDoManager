@@ -23,8 +23,7 @@ public class Main extends Application {
         // initialize the application with monthly view
         Parent root = FXMLLoader.load(getClass().getResource("../MonthlyToDo/MonthlyToDo.fxml"));
         DataCollector dc = new DataCollector();
-        dc.addNewItem(1, "Computer Science IA", "Finish programming", LocalDate.of(2021, 10, 15),
-                null, null, 0);
+
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
