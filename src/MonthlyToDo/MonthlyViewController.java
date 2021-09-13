@@ -1,5 +1,6 @@
 package MonthlyToDo;
 
+import base.DataCollector;
 import base.Main;
 import base.NewItemController;
 import javafx.fxml.FXML;
@@ -13,10 +14,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.*;
 import java.util.*;
 
@@ -52,6 +56,8 @@ public class MonthlyViewController implements Initializable {
     private final Font mainFont = new Font("Helvetica", 13);
     private LocalDate curDate;
     private int gridPaneStart;
+    private DataCollector dc;
+    private MonthItem[] monthData;
 
     @FXML
     private void addNewItem() {
@@ -71,6 +77,7 @@ public class MonthlyViewController implements Initializable {
         clearGridPane();
         setLblMonth(curDate);
         setupGrid(curDate);
+        monthData = getMonthData();
     }
 
     @FXML
@@ -79,17 +86,53 @@ public class MonthlyViewController implements Initializable {
         clearGridPane();
         setLblMonth(curDate);
         setupGrid(curDate);
+        monthData = getMonthData();
     }
 
     public void initialize(URL url, ResourceBundle rb) {
         // initialize label
         curDate = LocalDate.now();
+        dc = new DataCollector();
+        monthData = getMonthData();
         setLblMonth(curDate);
         centerButtons();
         centerLabels();
         gridPaneStart = gridPane.getChildren().size();
         setupGrid(curDate);
     }
+
+    public MonthItem[] getMonthData() {
+        ArrayList<MonthItem> itemList = new ArrayList<>();
+
+        // setting start and end dates to the first & last days of the month for the data collector
+        LocalDate start = curDate.withDayOfMonth(1);
+        LocalDate end = start.plusMonths(1).minusDays(1);
+
+        // try to get data from database
+        ResultSet itemData = dc.getItems(start, end);
+
+        // loop through ResultSet and append name & date to ArrayLists
+        try {
+            while (itemData.next()) {
+                // extract item name & date
+                String itemName = itemData.getString("name");
+                Date date = itemData.getDate("date");
+                LocalDate itemDate = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+                // update ArrayLists
+                MonthItem item = new MonthItem(itemName, itemDate);
+                itemList.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // store ArrayList values in array and return it
+        MonthItem[] items = new MonthItem[itemList.size()];
+        for (int i = 0; i < items.length; i++) {
+            items[i] = itemList.get(i);
+        }
+        return items;
+    } // end of method getData()
 
     public void clearGridPane() {
         int gridPaneEnd = gridPane.getChildren().size();
@@ -157,11 +200,10 @@ public class MonthlyViewController implements Initializable {
         Label lbl = new Label();
         Font font = getFont();
         lbl.setFont(font);
-        lbl.setPrefWidth(100);
-        lbl.setBackground(new Background(new BackgroundFill(Color.CYAN, new CornerRadii(0), new Insets(0))));
+        lbl.layoutXProperty().bind(pane.widthProperty());
+        lbl.setTextAlignment(TextAlignment.RIGHT);
+        //lbl.setBackground(new Background(new BackgroundFill(Color.CYAN, new CornerRadii(0), new Insets(0))));
         lbl.setText(""+day);
-        lbl.setAlignment(Pos.TOP_CENTER);
-
         pane.getChildren().add(lbl);
         return pane;
     }
