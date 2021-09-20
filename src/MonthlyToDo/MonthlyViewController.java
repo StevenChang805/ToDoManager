@@ -76,8 +76,8 @@ public class MonthlyViewController implements Initializable {
         curDate = curDate.minusMonths(1);
         clearGridPane();
         setLblMonth(curDate);
-        setupGrid(curDate);
         monthData = getMonthData();
+        setupGrid(curDate);
     }
 
     @FXML
@@ -85,8 +85,8 @@ public class MonthlyViewController implements Initializable {
         curDate = curDate.plusMonths(1);
         clearGridPane();
         setLblMonth(curDate);
-        setupGrid(curDate);
         monthData = getMonthData();
+        setupGrid(curDate);
     }
 
     public void initialize(URL url, ResourceBundle rb) {
@@ -193,18 +193,29 @@ public class MonthlyViewController implements Initializable {
             curPane.setPrefWidth(100);
             dayOfWeek = dayOfWeek % 7 + 1;
         }
+
+        displayItems();
+    }
+
+    public void displayItems() {
+        for (int i = 0; i < monthData.length; i++) {
+            System.out.println(monthData[i].getName());
+            monthData[i].display(gridPane);
+        }
     }
 
     public Pane makeDayPane(int day) {
         Pane pane = new Pane();
+        VBox vBox = new VBox();
         Label lbl = new Label();
         Font font = getFont();
         lbl.setFont(font);
-        lbl.layoutXProperty().bind(pane.widthProperty());
+        vBox.layoutXProperty().bind(pane.widthProperty());
+
         lbl.setTextAlignment(TextAlignment.RIGHT);
-        //lbl.setBackground(new Background(new BackgroundFill(Color.CYAN, new CornerRadii(0), new Insets(0))));
-        lbl.setText(""+day);
-        pane.getChildren().add(lbl);
+        lbl.setText(Integer.toString(day));
+        vBox.getChildren().add(lbl);
+        pane.getChildren().add(vBox);
         return pane;
     }
 
