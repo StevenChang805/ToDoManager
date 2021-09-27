@@ -1,51 +1,65 @@
 package MonthlyToDo;
 
+import base.Item;
+import base.Text;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 
-public class MonthItem {
-    private String name;
-    private LocalDate date;
+public class MonthItem extends Item {
     private final Font mainFont = new Font("Helvetica", 13);
 
     public MonthItem(String itemName, LocalDate itemDate) {
-        name = itemName;
-        date = itemDate;
-    }
+        super(itemDate, new Text(itemName, new Font("Helvetica", 13)), new Text("", new Font("Helvetica", 13)));
 
-    public String getName() {
-        return name;
-    }
-
-    public LocalDate getDate() {
-        return date;
     }
 
     public void display(GridPane gridPane) {
         Label lbl = new Label();
         lbl.setFont(mainFont);
         lbl.setTextAlignment(TextAlignment.RIGHT);
-        lbl.setText(name);
+        lbl.setText(getName());
 
-        int[] indexes = dayToPosn(date);
+        lbl.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+            }
+        });
+
+        lbl.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                lbl.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200), CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+        });
+
+        lbl.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                lbl.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
+            }
+        });
+
+        int[] indexes = dayToPosn(getDate());
         int row = indexes[0];
         int col = indexes[1];
 
-        Pane pane = (Pane) getNodeFromGridPane(gridPane, col, row);
-        System.out.println(col + ", " + row);
+        StackPane pane = (StackPane) getNodeFromGridPane(gridPane, col, row);
         if (pane != null) {
             VBox vBox = (VBox) pane.getChildren().get(0);
-            vBox.getChildren().add(lbl);
+            VBox itemBox = (VBox) vBox.getChildren().get(1);
+            itemBox.getChildren().add(lbl);
         }
-
     }
 
     public int[] dayToPosn (LocalDate date) {
@@ -70,4 +84,6 @@ public class MonthItem {
         }
         return null;
     }
+
+
 }

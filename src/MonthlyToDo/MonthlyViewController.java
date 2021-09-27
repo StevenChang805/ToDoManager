@@ -188,9 +188,8 @@ public class MonthlyViewController implements Initializable {
         for (int i = 1; i <= numDays; i++) {
             int colIndex = (dayOfWeek-1)%7;
             int rowIndex = (i+modifier)/7+1;
-            Pane curPane = makeDayPane(i);
+            StackPane curPane = makeDayPane(i);
             gridPane.add(curPane, colIndex, rowIndex);
-            curPane.setPrefWidth(100);
             dayOfWeek = dayOfWeek % 7 + 1;
         }
 
@@ -199,23 +198,26 @@ public class MonthlyViewController implements Initializable {
 
     public void displayItems() {
         for (int i = 0; i < monthData.length; i++) {
-            System.out.println(monthData[i].getName());
             monthData[i].display(gridPane);
         }
     }
 
-    public Pane makeDayPane(int day) {
-        Pane pane = new Pane();
+    public StackPane makeDayPane(int day) {
+        StackPane pane = new StackPane();
         VBox vBox = new VBox();
+        VBox itemBox = new VBox();
         Label lbl = new Label();
         Font font = getFont();
         lbl.setFont(font);
-        vBox.layoutXProperty().bind(pane.widthProperty());
 
-        lbl.setTextAlignment(TextAlignment.RIGHT);
         lbl.setText(Integer.toString(day));
+        itemBox.setAlignment(Pos.TOP_LEFT);
+        itemBox.prefWidthProperty().bind(vBox.widthProperty());
         vBox.getChildren().add(lbl);
+        vBox.getChildren().add(itemBox);
+        vBox.setAlignment(Pos.TOP_RIGHT);
         pane.getChildren().add(vBox);
+
         return pane;
     }
 
@@ -235,7 +237,7 @@ public class MonthlyViewController implements Initializable {
         }
         // Create the stage
         Stage inputStage = new Stage();
-        // Sets the owner to being this window NOTE primaryStage is set up in StockManagement
+
         inputStage.initOwner(Main.primaryStage);
         // Add the Scene to the stage
         inputStage.setScene(newScene);
