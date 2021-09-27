@@ -17,12 +17,12 @@ public abstract class Item {
         return date;
     }
 
-    public Text getName() {
-        return name;
+    public String getName() {
+        return name.getContent();
     }
 
-    public Text getDesc() {
-        return description;
+    public String getDesc() {
+        return description.getContent();
     }
 
     public void setDate(LocalDate newDate) {
@@ -37,5 +37,4 @@ public abstract class Item {
         description = newDesc;
     }
 
-    public abstract void draw();
 }

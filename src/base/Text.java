@@ -1,6 +1,6 @@
 package base;
 
-import java.awt.*;
+import javafx.scene.text.Font;
 
 public class Text {
     String content;
@@ -9,5 +9,9 @@ public class Text {
     public Text(String content, Font font) {
         this.content = content;
         this.font = font;
+    }
+
+    public String getContent() {
+        return content;
     }
 }

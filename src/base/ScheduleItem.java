@@ -29,8 +29,4 @@ public class ScheduleItem extends Item {
         endTime = newEnd;
     }
 
-    @Override
-    public void draw() {
-
-    }
 }

@@ -18,8 +18,4 @@ public class Task extends Item {
         complete = newStatus;
     }
 
-    @Override
-    public void draw() {
-
-    }
 }
