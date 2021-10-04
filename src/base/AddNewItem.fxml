@@ -1,20 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="base.NewItemController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="base.NewItemController">
    <children>
-      <TextField fx:id="textField" layoutX="220.0" layoutY="66.0">
+      <TextField fx:id="nameField" layoutX="129.0" layoutY="78.0" prefHeight="24.0" prefWidth="342.0">
          <font>
-            <Font name="Times New Roman" size="13.0" />
+            <Font name="Helvetica" size="13.0" />
          </font></TextField>
-      <Button fx:id="btnClose" layoutX="512.0" layoutY="351.0" mnemonicParsing="false" onAction="#close" text="Close">
+      <Button fx:id="btnSave" layoutX="468.0" layoutY="312.0" mnemonicParsing="false" onAction="#save" text="Save">
          <font>
-            <Font name="Times New Roman" size="13.0" />
+            <Font name="Helvetica" size="13.0" />
          </font>
       </Button>
+      <ChoiceBox fx:id="choiceBox" layoutX="168.0" layoutY="38.0" prefHeight="26.0" prefWidth="190.0" stylesheets="@addNewItem.css" />
+      <Label layoutX="227.0" layoutY="14.0" prefHeight="17.0" prefWidth="72.0" text="Adding New">
+         <font>
+            <Font name="Helvetica" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="86.0" layoutY="81.0" text="Name">
+         <font>
+            <Font name="Helvetica" size="13.0" />
+         </font></Label>
+      <Label layoutX="92.0" layoutY="117.0" text="Date">
+         <font>
+            <Font name="Helvetica" size="13.0" />
+         </font></Label>
+      <DatePicker fx:id="dP" layoutX="129.0" layoutY="113.0" prefHeight="26.0" prefWidth="342.0" stylesheets="@addNewItem.css" />
+      <Label layoutX="57.0" layoutY="154.0" text="Description">
+         <font>
+            <Font name="Helvetica" size="13.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="descField" layoutX="129.0" layoutY="154.0" prefHeight="67.0" prefWidth="342.0">
+         <font>
+            <Font name="Helvetica" size="13.0" />
+         </font></TextArea>
+      <TextField fx:id="startTimeField" layoutX="129.0" layoutY="238.0">
+         <font>
+            <Font name="Helvetica" size="13.0" />
+         </font></TextField>
+      <Label fx:id="startTime" layoutX="55.0" layoutY="234.0" prefHeight="35.0" prefWidth="62.0" text="Start Time (HH:MM)" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Helvetica" size="13.0" />
+         </font></Label>
+      <Label fx:id="endTime" layoutX="55.0" layoutY="277.0" prefHeight="35.0" prefWidth="62.0" text="End Time (HH:MM)" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Helvetica" size="13.0" />
+         </font></Label>
+      <TextField fx:id="endTimeField" layoutX="129.0" layoutY="282.0">
+         <font>
+            <Font name="Helvetica" size="13.0" />
+         </font></TextField>
    </children>
 </Pane>

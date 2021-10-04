@@ -64,27 +64,28 @@ public class MonthlyViewController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../base/AddNewItem.fxml"));
         Stage stage = getStage(loader);
         NewItemController nic = loader.<NewItemController>getController();
-        nic.setTextField("Hi");
+        stage.setResizable(false);
 
         stage.showAndWait();
-
-        System.out.println(nic.getTextField());
+        resetGrid();
     }
 
     @FXML
     private void prevMonth() {
         curDate = curDate.minusMonths(1);
-        clearGridPane();
         setLblMonth(curDate);
-        monthData = getMonthData();
-        setupGrid(curDate);
+        resetGrid();
     }
 
     @FXML
     private void nextMonth() {
         curDate = curDate.plusMonths(1);
-        clearGridPane();
         setLblMonth(curDate);
+        resetGrid();
+    }
+
+    private void resetGrid() {
+        clearGridPane();
         monthData = getMonthData();
         setupGrid(curDate);
     }
@@ -231,8 +232,7 @@ public class MonthlyViewController implements Initializable {
         try {
             newScene = new Scene(loader.load());
         } catch (IOException e) {
-            System.out.println("Fail");
-            System.out.println(e);
+            e.printStackTrace();
             return null;
         }
         // Create the stage

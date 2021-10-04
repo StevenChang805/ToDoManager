@@ -117,7 +117,7 @@ public class DataCollector {
                 + complete + ");";
         // execute the query via updateQuery (secure)
         updateQuery(query, "There was an issue adding new items into the database.");
-    } // end of method addNewItem
+    } // end of method addNewItem.css
 
     public void updateItem(int id, int type, String name, String description, LocalDate date,
                            LocalDateTime start_time, LocalDateTime end_time, int complete) {
