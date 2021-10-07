@@ -1,0 +1,31 @@
+.label {
+    -fx-font: 13px "Helvetica";
+}
+
+.text-field {
+    -fx-font: 13px "Helvetica";
+}
+
+.text-area {
+    -fx-font: 13px "Helvetica";
+}
+
+.date-picker {
+    -fx-font: 13px "Helvetica";
+}
+
+.choice-box {
+    -fx-font: 13px "Helvetica";
+}
+
+.choice-box .text-field {
+    -fx-font: 13px "Helvetica";
+}
+
+.choice-box .list-cell {
+    -fx-font: 13px "Helvetica";
+}
+
+.button {
+    -fx-font: 13px "Helvetica";
+}

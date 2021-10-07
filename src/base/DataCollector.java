@@ -3,8 +3,11 @@ package base;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Properties;
 
 public class DataCollector {
@@ -79,6 +82,7 @@ public class DataCollector {
             getPreparedStmt(query).executeUpdate();
         } catch (SQLException e) {
             System.out.println(error);
+            e.printStackTrace();
         }
     } // end of method updateQuery
 
@@ -101,10 +105,10 @@ public class DataCollector {
         String start_time_string = "null";
         String end_time_string = "null";
         if (start_time != null) {
-            start_time_string = localDateTimeToDateTime(start_time);
+            start_time_string = "'"+localDateTimeToDateTime(start_time)+"'";
         }
         if (end_time != null) {
-            end_time_string = localDateTimeToDateTime(end_time);
+            end_time_string = "'"+localDateTimeToDateTime(end_time)+"'";
         }
         // create the SQL query to add a new item
         String query = "INSERT INTO items (type, name, description, date, start_time, end_time, complete) VALUES ("
@@ -117,7 +121,7 @@ public class DataCollector {
                 + complete + ");";
         // execute the query via updateQuery (secure)
         updateQuery(query, "There was an issue adding new items into the database.");
-    } // end of method addNewItem.css
+    } // end of method styleSheet.css
 
     public void updateItem(int id, int type, String name, String description, LocalDate date,
                            LocalDateTime start_time, LocalDateTime end_time, int complete) {
@@ -125,22 +129,24 @@ public class DataCollector {
         String date_string = localDateToDateTime(date);
         String start_time_string = "null";
         String end_time_string = "null";
+
         if (start_time != null) {
-            start_time_string = localDateTimeToDateTime(start_time);
+            start_time_string = "'"+localDateTimeToDateTime(start_time)+"'";
         }
         if (end_time != null) {
-            end_time_string = localDateTimeToDateTime(end_time);
+            end_time_string = "'"+localDateTimeToDateTime(end_time)+"'";
         }
         // create SQL query
         String query = "UPDATE items SET " +
                 "type="+type+", " +
-                "name="+name+", " +
-                "description="+description+", " +
+                "name=\""+name+"\", " +
+                "description=\""+description+"\", " +
                 "date="+date_string+", " +
                 "start_time="+start_time_string+", " +
                 "end_time="+end_time_string+", " +
-                "complete="+complete+
+                "complete="+complete+" " +
                 "WHERE id="+id+";";
+        System.out.println(query);
         // execute SQL query via updateQuery (secure)
         updateQuery(query, "There was an issue updating an item in the database.");
     } // end of method updateItem
@@ -167,24 +173,13 @@ public class DataCollector {
 
 
     public String localDateToDateTime(LocalDate date) {
-        String year = date.getYear()+"";
-        String month = prefixNumber(date.getMonthValue());
-        String day = prefixNumber(date.getDayOfMonth());
-        return year+month+day;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        return date.format(formatter);
     } // end of method localDateToDateTime
 
     public String localDateTimeToDateTime(LocalDateTime dateTime) {
-        // using existing method to create date string
-        LocalDate date = dateTime.toLocalDate();
-        String date_string = localDateToDateTime(date);
-
-        // creating time string
-        String hour = prefixNumber(dateTime.getHour());
-        String minute = prefixNumber(dateTime.getMinute());
-        String second = prefixNumber(dateTime.getSecond());
-        String time_string = hour+":"+minute+":"+second;
-
-        return date_string + " " + time_string;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dateTime.format(formatter);
     } // end of method localDateTimeToDateTime
 
     public String prefixNumber(int num) {

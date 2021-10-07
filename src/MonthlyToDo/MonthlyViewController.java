@@ -6,21 +6,20 @@ import base.NewItemController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.*;
 import java.util.*;
 
@@ -48,10 +47,10 @@ public class MonthlyViewController implements Initializable {
     @FXML public Pane sunPane;
     @FXML public Pane taskLblPane;
 
-    @FXML
-    public Button prevBtn;
-    @FXML
-    public Button nextBtn;
+    @FXML public VBox taskBox;
+
+    @FXML public Button prevBtn;
+    @FXML public Button nextBtn;
 
     private final Font mainFont = new Font("Helvetica", 13);
     private LocalDate curDate;
@@ -61,7 +60,7 @@ public class MonthlyViewController implements Initializable {
 
     @FXML
     private void addNewItem() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../base/AddNewItem.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../base/NewItem.fxml"));
         Stage stage = getStage(loader);
         NewItemController nic = loader.<NewItemController>getController();
         stage.setResizable(false);
@@ -84,7 +83,7 @@ public class MonthlyViewController implements Initializable {
         resetGrid();
     }
 
-    private void resetGrid() {
+    public void resetGrid() {
         clearGridPane();
         monthData = getMonthData();
         setupGrid(curDate);
@@ -116,11 +115,28 @@ public class MonthlyViewController implements Initializable {
         try {
             while (itemData.next()) {
                 // extract item name & date
-                String itemName = itemData.getString("name");
                 Date date = itemData.getDate("date");
+                Time startTime = itemData.getTime("start_time");
+                Time endTime = itemData.getTime("end_time");
+
+                int itemId = itemData.getInt("id");
+                int itemType = itemData.getInt("type");
+                String itemName = itemData.getString("name");
+                String itemDesc = itemData.getString("description");
                 LocalDate itemDate = Instant.ofEpochMilli(date.getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+                LocalDateTime itemStartTime = null;
+                LocalDateTime itemEndTime = null;
+                if (startTime != null) {
+                    itemStartTime = new Timestamp(startTime.getTime()).toLocalDateTime();
+                }
+                if (endTime != null) {
+                    itemEndTime = new Timestamp(endTime.getTime()).toLocalDateTime();
+                }
+
+                int complete = itemData.getInt("complete");
+
                 // update ArrayLists
-                MonthItem item = new MonthItem(itemName, itemDate);
+                MonthItem item = new MonthItem(itemId, itemType, itemName, itemDate, itemDesc, itemStartTime, itemEndTime, complete);
                 itemList.add(item);
             }
         } catch (SQLException e) {
@@ -187,19 +203,24 @@ public class MonthlyViewController implements Initializable {
         int modifier = dayOfWeek + 5;
 
         for (int i = 1; i <= numDays; i++) {
-            int colIndex = (dayOfWeek-1)%7;
-            int rowIndex = (i+modifier)/7+1;
+            int colIndex = (dayOfWeek - 1) % 7;
+            int rowIndex = (i + modifier) / 7 + 1;
             StackPane curPane = makeDayPane(i);
             gridPane.add(curPane, colIndex, rowIndex);
             dayOfWeek = dayOfWeek % 7 + 1;
         }
-
-        displayItems();
+        displayItemsOnCalendar();
     }
 
-    public void displayItems() {
+    public void displayItemsOnCalendar() {
         for (int i = 0; i < monthData.length; i++) {
-            monthData[i].display(gridPane);
+            monthData[i].displayOnCalendar(gridPane);
+        }
+    }
+
+    public void displayItemsOnTaskList() {
+        for (int i = 0; i < monthData.length; i++) {
+            monthData[i].displayOnTaskList(taskBox);
         }
     }
 
