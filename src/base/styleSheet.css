@@ -29,3 +29,37 @@
 .button {
     -fx-font: 13px "Helvetica";
 }
+
+.pane {
+    -fx-padding: 2px;
+}
+
+.list-view {
+    -fx-font: 13px "Helvetica";
+    -fx-background-color: whitesmoke;
+    -fx-padding: 0px;
+    -fx-background-insets: 0;
+}
+
+.list-view .scroll-bar:horizontal {
+    -fx-scale-y: 0;
+    -fx-background-color: whitesmoke;
+    -fx-padding: -10px;
+}
+
+.scroll-bar > .corner {
+    -fx-background-color: whitesmoke;
+}
+
+.list-view  .list-cell {
+    -fx-background-color: whitesmoke;
+}
+
+.list-view .list-cell:hover {
+    -fx-background-color: #c8c8c8;
+    -fx-cursor: hand;
+}
+
+.list-view .list-cell:selected {
+    -fx-text-fill: black;
+}

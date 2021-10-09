@@ -20,13 +20,15 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 
 public class MonthItem extends Item {
+    private MonthlyViewController mvc;
     private DataCollector dc;
     private VBox vBox;
-    private VBox itemBox;
-    private Label calendarLbl;
+    private VBox calendarBox;
+    private Label lbl;
+    private Label taskLbl;
     private final Font mainFont = new Font("Helvetica", 13);
 
-    public MonthItem(int id, int type, String name, LocalDate date, String desc, LocalDateTime startTime, LocalDateTime endTime, int complete) {
+    public MonthItem(int id, int type, String name, LocalDate date, String desc, LocalDateTime startTime, LocalDateTime endTime, int complete, MonthlyViewController mvc) {
         super(id,
                 type,
                 date,
@@ -36,59 +38,88 @@ public class MonthItem extends Item {
                 endTime,
                 complete);
         dc = new DataCollector();
-        calendarLbl = new Label();
-        calendarLbl.setFont(mainFont);
-        calendarLbl.setMaxWidth(Double.MAX_VALUE);
-        calendarLbl.cursorProperty().set(Cursor.OPEN_HAND);
+        lbl = new Label();
+        initializeLabel(lbl);
+        if (getType() == 0) {
+            taskLbl = new Label();
+            initializeLabel(taskLbl);
+        }
+        this.mvc = mvc;
+    }
 
-        calendarLbl.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+    public String toString() {
+        return getName();
+    }
+
+    public void initializeLabel(Label lbl) {
+        lbl.setFont(mainFont);
+        lbl.setPadding(new Insets(0.0, 7.0, 0.0, 7.0));
+        lbl.setMaxWidth(Double.MAX_VALUE);
+        lbl.cursorProperty().set(Cursor.OPEN_HAND);
+        lbl.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                calendarLbl.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200), CornerRadii.EMPTY, Insets.EMPTY)));
+                onMouseEnter(lbl);
             }
         });
-        calendarLbl.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+        lbl.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                calendarLbl.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
+                onMouseExit(lbl);
             }
         });
     }
 
-    public void displayOnCalendar(GridPane gridPane) {
-        calendarLbl.setText(getName());
+    public void onMouseClick() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../base/ShowItem.fxml"));
+        Stage stage = getStage(loader);
+        ShowItemController sic = loader.<ShowItemController>getController();
+        stage.setResizable(false);
 
-        calendarLbl.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        sic.setId(getId());
+        sic.setType(getType());
+        sic.setName(getName());
+        sic.setDate(getDate());
+        sic.setDesc(getDesc());
+        sic.setStartTime(getStartTimeString());
+        sic.setEndTime(getEndTimeString());
+        sic.display();
+
+        stage.showAndWait();
+
+        if (sic.getSave()) {
+            setName(sic.getName());
+            lbl.setText(getName());
+            if (getType() == 0) {
+                taskLbl.setText(getName());
+            }
+            setDescription(sic.getDesc());
+            setDate(sic.getDate());
+            setStartTime(sic.getStartTime());
+            setEndTime(sic.getEndTime());
+            setComplete(sic.getComplete());
+        }
+        if (sic.getDelete()) {
+            calendarBox.getChildren().remove(lbl);
+            mvc.removeItem(this);
+        }
+    }
+
+    public void onMouseEnter(Label lbl) {
+        lbl.setBackground(new Background(new BackgroundFill(Color.rgb(200, 200, 200), CornerRadii.EMPTY, Insets.EMPTY)));
+    }
+
+    public void onMouseExit(Label lbl) {
+        lbl.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, CornerRadii.EMPTY, Insets.EMPTY)));
+    }
+
+    public void displayOnCalendar(GridPane gridPane) {
+        lbl.setText(getName());
+
+        lbl.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../base/ShowItem.fxml"));
-                Stage stage = getStage(loader);
-                ShowItemController sic = loader.<ShowItemController>getController();
-                stage.setResizable(false);
-
-                sic.setId(getId());
-                sic.setType(getType());
-                sic.setName(getName());
-                sic.setDate(getDate());
-                sic.setDesc(getDesc());
-                sic.setStartTime(getStartTimeString());
-                sic.setEndTime(getEndTimeString());
-                sic.display();
-
-                stage.showAndWait();
-
-                if (sic.getSave()) {
-                    setName(sic.getName());
-                    calendarLbl.setText(getName());
-                    setDescription(sic.getDesc());
-                    setDate(sic.getDate());
-                    setStartTime(sic.getStartTime());
-                    setEndTime(sic.getEndTime());
-                    setComplete(sic.getComplete());
-                }
-                if (sic.getDelete()) {
-                    itemBox.getChildren().remove(calendarLbl);
-                }
+                onMouseClick();
             }
         });
 
@@ -99,13 +130,9 @@ public class MonthItem extends Item {
         StackPane pane = (StackPane) getNodeFromGridPane(gridPane, col, row);
         if (pane != null) {
             vBox = (VBox) pane.getChildren().get(0);
-            itemBox = (VBox) vBox.getChildren().get(1);
-            itemBox.getChildren().add(calendarLbl);
+            calendarBox = (VBox) vBox.getChildren().get(1);
+            calendarBox.getChildren().add(lbl);
         }
-    }
-
-    public void displayOnTaskList(VBox taskList) {
-
     }
 
     public int[] dayToPosn (LocalDate date) {

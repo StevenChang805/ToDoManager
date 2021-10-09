@@ -3,6 +3,9 @@ package MonthlyToDo;
 import base.DataCollector;
 import base.Main;
 import base.NewItemController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,6 +13,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -47,7 +52,7 @@ public class MonthlyViewController implements Initializable {
     @FXML public Pane sunPane;
     @FXML public Pane taskLblPane;
 
-    @FXML public VBox taskBox;
+    @FXML public ListView<MonthItem> tasks;
 
     @FXML public Button prevBtn;
     @FXML public Button nextBtn;
@@ -56,7 +61,8 @@ public class MonthlyViewController implements Initializable {
     private LocalDate curDate;
     private int gridPaneStart;
     private DataCollector dc;
-    private MonthItem[] monthData;
+    private ObservableList<MonthItem> allItems;
+    private ObservableList<MonthItem> allTasks;
 
     @FXML
     private void addNewItem() {
@@ -84,16 +90,27 @@ public class MonthlyViewController implements Initializable {
     }
 
     public void resetGrid() {
-        clearGridPane();
-        monthData = getMonthData();
+        clearScreen();
+        getMonthData();
         setupGrid(curDate);
+    }
+
+    public void removeItem(MonthItem item) {
+        allItems.remove(item);
+        if (item.getType() == 0) {
+            allTasks.remove(item);
+        }
     }
 
     public void initialize(URL url, ResourceBundle rb) {
         // initialize label
         curDate = LocalDate.now();
         dc = new DataCollector();
-        monthData = getMonthData();
+        allItems = FXCollections.observableArrayList();
+        allTasks = FXCollections.observableArrayList();
+        getMonthData();
+        tasks.setItems(allTasks);
+        tasks.setOnMouseClicked(mouseEvent -> tasks.getSelectionModel().getSelectedItem().onMouseClick());
         setLblMonth(curDate);
         centerButtons();
         centerLabels();
@@ -101,9 +118,8 @@ public class MonthlyViewController implements Initializable {
         setupGrid(curDate);
     }
 
-    public MonthItem[] getMonthData() {
-        ArrayList<MonthItem> itemList = new ArrayList<>();
-
+    public void getMonthData() {
+        allItems.clear();
         // setting start and end dates to the first & last days of the month for the data collector
         LocalDate start = curDate.withDayOfMonth(1);
         LocalDate end = start.plusMonths(1).minusDays(1);
@@ -136,22 +152,18 @@ public class MonthlyViewController implements Initializable {
                 int complete = itemData.getInt("complete");
 
                 // update ArrayLists
-                MonthItem item = new MonthItem(itemId, itemType, itemName, itemDate, itemDesc, itemStartTime, itemEndTime, complete);
-                itemList.add(item);
+                MonthItem item = new MonthItem(itemId, itemType, itemName, itemDate, itemDesc, itemStartTime, itemEndTime, complete, this);
+                allItems.add(item);
+                if (item.getType() == 0) {
+                    allTasks.add(item);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        // store ArrayList values in array and return it
-        MonthItem[] items = new MonthItem[itemList.size()];
-        for (int i = 0; i < items.length; i++) {
-            items[i] = itemList.get(i);
-        }
-        return items;
     } // end of method getData()
 
-    public void clearGridPane() {
+    public void clearScreen() {
         int gridPaneEnd = gridPane.getChildren().size();
         gridPane.getChildren().remove(gridPaneStart, gridPaneEnd);
     }
@@ -213,19 +225,15 @@ public class MonthlyViewController implements Initializable {
     }
 
     public void displayItemsOnCalendar() {
-        for (int i = 0; i < monthData.length; i++) {
-            monthData[i].displayOnCalendar(gridPane);
-        }
-    }
-
-    public void displayItemsOnTaskList() {
-        for (int i = 0; i < monthData.length; i++) {
-            monthData[i].displayOnTaskList(taskBox);
+        for (int i = 0; i < allItems.size(); i++) {
+            allItems.get(i).displayOnCalendar(gridPane);
         }
     }
 
     public StackPane makeDayPane(int day) {
         StackPane pane = new StackPane();
+        // top right bottom left
+//        pane.setPadding(new Insets(0.0, 2.0, 0.0, 2.0));
         VBox vBox = new VBox();
         VBox itemBox = new VBox();
         Label lbl = new Label();
